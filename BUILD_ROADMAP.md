@@ -121,7 +121,8 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
   3. `chore(repo): add pre-commit hooks`
   4. `docs(readme): add project pitch and build phases`
 - **Definition of done**: `pre-commit run --all-files` passes. `python -c "import rl_locomotion"` works.
-- **Status**: [ ]
+- **Status**: [✅]
+- **Note**: folded ruff config into commit 1 instead of separate commit.
 
 #### Step 2 — Isaac Lab installation & smoke test
 - **Goal**: Isaac Lab installed, a built-in example runs headless with 16 parallel envs.
