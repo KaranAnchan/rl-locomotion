@@ -122,7 +122,8 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
   4. `docs(readme): add project pitch and build phases`
 - **Definition of done**: `pre-commit run --all-files` passes. `python -c "import rl_locomotion"` works.
 - **Status**: [✅]
-- **Note**: folded ruff config into commit 1 instead of separate commit.
+- **Note**:
+  - folded ruff config into commit 1 instead of separate commit.
 
 #### Step 2 — Isaac Lab installation & smoke test
 - **Goal**: Isaac Lab installed, a built-in example runs headless with 16 parallel envs.
@@ -130,7 +131,11 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
 - **Deliverables**: installation notes in `docs/setup.md`, a recorded terminal output showing the Isaac Lab cartpole example running.
 - **Commit plan**: single commit `docs(setup): add isaac lab installation notes`.
 - **Definition of done**: `./isaaclab.sh -p source/standalone/tutorials/00_sim/create_empty.py --headless` runs without error on your machine.
-- **Status**: [ ]
+- **Status**: [✅]
+- **Notes**:
+  - RTX 5070 (Blackwell) PhysX GPU pipeline works fine on driver 595.97 + Isaac Lab 2.3.2 + torch 2.7.0+cu128. The open GitHub issues about Blackwell PhysX fallback do NOT reproduce on this setup.
+  - Multiple dependency footguns hit on the way: tensordict ABI mismatch (pinned 0.7.2), torchaudio missing after force-reinstall, Git Bash + uv path mangling, conda shadowing venv. All documented in docs/setup.md.
+  - Probe sustained 190k+ steps/sec on Isaac-Ant-v0 with 4096 envs. Project is go.
 
 #### Step 3 — Project package skeleton
 - **Goal**: All the module directories from §2.4 exist as real Python packages with docstring-only `__init__.py` files; `scripts/hello.py` imports from the package and runs.
@@ -230,6 +235,9 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
 |------------|--------------------------------------------------|-------------------------------------------|
 | 2026-04-08 | Pin Python 3.14, not 3.10                         | Isaac Sim 5.x requires 3.11; Step 1 pin was wrong |
 | 2026-04-08 | Windows 11 native Isaac Lab              | User chose despite Blackwell friction; accepts risk |
+| 2026-04-09 | RTX 5070 + Windows native confirmed working          | Probe hit 200k steps/sec on Ant; Blackwell PhysX bug does not affect this driver/sw combo |
+| 2026-04-09 | Pin tensordict==0.7.2                                | Newer wheel built against torch ≥2.8 ABI; segfaults at import on torch 2.7 |
+| 2026-04-09 | PowerShell-only for this project                     | Git Bash mangles cygdrive paths and breaks uv venv detection |
 | ...        | ...                                              | ...                                       |
 
 ---
