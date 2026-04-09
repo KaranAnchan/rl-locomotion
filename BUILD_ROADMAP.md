@@ -15,7 +15,7 @@ deployment harness.
 ## 2. Locked conventions
 
 ### 2.1 Language & tooling
-- **Python**: 3.10 (Isaac Lab's supported version as of build date)
+- **Python**: 3.14 (Isaac Lab's supported version as of build date)
 - **Env manager**: `uv` (fast, modern) — fallback to `conda` only if Isaac Lab forces it
 - **Formatter / linter**: `ruff` (replaces black + flake8 + isort in one tool)
 - **Type checker**: `mypy` in `--strict` mode for new code, lenient for imported libs
@@ -228,7 +228,8 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
 
 | Date       | Decision                                         | Rationale                                 |
 |------------|--------------------------------------------------|-------------------------------------------|
-| YYYY-MM-DD | Chose `uv` over `poetry`                         | Faster, simpler lockfile                  |
+| 2026-04-08 | Pin Python 3.14, not 3.10                         | Isaac Sim 5.x requires 3.11; Step 1 pin was wrong |
+| 2026-04-08 | Windows 11 native Isaac Lab              | User chose despite Blackwell friction; accepts risk |
 | ...        | ...                                              | ...                                       |
 
 ---
