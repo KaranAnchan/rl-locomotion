@@ -142,7 +142,7 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
 - **Branch**: `feat/repo-skeleton`
 - **Commit plan**: one commit per subpackage is overkill — group into 2–3 commits by layer (core modules, training, eval+deploy).
 - **Definition of done**: `pytest tests/test_imports.py` passes (a single test that imports every submodule).
-- **Status**: [ ]
+- **Status**: [✅]
 
 ---
 
