@@ -211,3 +211,10 @@ __marimo__/
 # generic env/ rule above which still protects top-level virtualenvs.
 !src/rl_locomotion/env/
 !src/rl_locomotion/env/**
+
+# IDE
+.vscode/
+.idea/
+
+__pycache__/
+*.pyc
