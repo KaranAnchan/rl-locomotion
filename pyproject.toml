@@ -43,6 +43,7 @@ ignore = ["D203", "D213"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["D"]
+"scripts/roll_random_policy.py" = ["E402"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -51,3 +52,14 @@ convention = "google"
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-ra --strict-markers"
+
+[tool.pyright]
+extraPaths = [
+    "C:/IsaacLab/source",
+    "C:/IsaacLab/source/isaaclab",
+    "C:/IsaacLab/source/isaaclab_tasks",
+    "C:/IsaacLab/source/isaaclab_assets",
+    "./src"
+]
+reportMissingImports = "none"
+typeCheckingMode = "basic"
