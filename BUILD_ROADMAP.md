@@ -152,13 +152,13 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
 - **Goal**: A `GoTask` class that wraps Isaac Lab's Go2 example into a Gym-style interface. Flat terrain only. Observations = concat everything. Resetting and stepping work.
 - **Branch**: `feat/env-go2-flat`
 - **Definition of done**: a `scripts/roll_random_policy.py` script drives 16 envs with uniform-random actions for 100 steps and prints reward.
-- **Status**: [ ]
+- **Status**: [✅]
 
 #### Step 5 — Reward shaping module (spec §2.3)
 - **Goal**: `src/rl_locomotion/reward/` implements all 6 reward terms with per-term logging.
 - **Branch**: `feat/reward-shaping`
 - **Definition of done**: unit tests verify each term in isolation; integrated reward logs to W&B when called from the random-policy rollout.
-- **Status**: [ ]
+- **Status**: [✅]
 
 #### Step 6 — Teacher network + PPO wiring (flat terrain only)
 - **Goal**: rsl_rl PPO trains a teacher MLP on flat terrain to walk forward at a commanded velocity. **This is the spec's explicit build-order advice — nail this before touching curriculum.**
