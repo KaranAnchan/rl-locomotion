@@ -218,3 +218,8 @@ __marimo__/
 
 __pycache__/
 *.pyc
+
+# Training output
+logs/
+*.pt
+*.pth
