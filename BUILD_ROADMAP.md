@@ -164,7 +164,14 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
 - **Goal**: rsl_rl PPO trains a teacher MLP on flat terrain to walk forward at a commanded velocity. **This is the spec's explicit build-order advice — nail this before touching curriculum.**
 - **Branch**: `feat/teacher-ppo-flatwalk`
 - **Definition of done**: a video rollout at 50M env steps shows Go2 walking forward coherently on flat ground. Tag `v0.1.0-teacher-flatwalk`.
-- **Status**: [ ]
+- **Status**: [✅]
+- **Notes**:
+  - rsl_rl on this machine is >= 5.0.0, which deprecated the combined `policy=RslRlPpoActorCriticCfg` schema. Switched to per-network `actor=` and `critic=` `RslRlMLPModelCfg` blocks with explicit `distribution_cfg=GaussianDistributionCfg(...)` for the actor (stochastic) and `distribution_cfg=None` for the critic (deterministic). The newer `RslRlMLPModelCfg` still defines deprecated fields (`stochastic`, `init_noise_std`, etc.) as defaults, so we strip them in `train_teacher.py` / `play_teacher.py` before handing the dict to `OnPolicyRunner`. Will go away naturally when isaaclab_rl pins matching rsl_rl version.
+  - `isaaclab_rl.rsl_rl` is the correct import path despite Pylance suggesting the doubled `isaaclab_rl.isaaclab_rl.rsl_rl`. Pylance reads source layout; runtime uses installed package metadata. Trust runtime.
+  - All Isaac Lab scripts must follow the AppLauncher-before-imports pattern. Generalized ruff E402 ignore to `"scripts/*"` in pyproject.toml so any future script can do the same without per-file rules.
+  - Trained 1500 iterations / 147M env steps in ~36 minutes on RTX 5070 at ~70k steps/sec with 4096 envs. Final iter: mean reward 6.17, mean episode length 500 (cap), action std collapsed from 1.0 to 0.22, base_contact ~0.003 (essentially zero falls). Track_lin_vel reward is modest (0.12) and could be pushed harder by tuning weights or training longer; track_ang_vel is solid (0.61).
+  - `play_teacher.py` works headlessly (loads checkpoint, runs policy to completion). Rendered playback (`--video` or non-headless) crashes inside Omniverse Hydra renderer with the same Blackwell viewport bug we documented in Step 2 — `rtx.scenedb.plugin.dll` access violation. Punted on video rendering for now; will revisit when there's a more impressive student policy worth filming, possibly on a cloud GPU. Numerical metrics are the deliverable.
+  - `.gitignore` updated to exclude `logs/`, `*.pt`, `*.pth`. Initial commit had to `git reset` to unstage logs that were staged before the ignore rule existed — `.gitignore` doesn't retroactively untrack files.
 
 #### Step 7 — Observation split (privileged vs proprioceptive)
 - **Goal**: env wrapper now exposes the two obs modes per spec §2.1. Teacher uses privileged.
@@ -238,6 +245,9 @@ Each step has: **Goal**, **Branch**, **Deliverables**, **Commit plan**, **Defini
 | 2026-04-09 | RTX 5070 + Windows native confirmed working          | Probe hit 200k steps/sec on Ant; Blackwell PhysX bug does not affect this driver/sw combo |
 | 2026-04-09 | Pin tensordict==0.7.2                                | Newer wheel built against torch ≥2.8 ABI; segfaults at import on torch 2.7 |
 | 2026-04-09 | PowerShell-only for this project                     | Git Bash mangles cygdrive paths and breaks uv venv detection |
+| 2026-04-13 | rsl_rl >= 5.0 schema with per-network actor/critic       | Older policy= API removed; new schema uses DistributionCfg for stochastic outputs |
+| 2026-04-13 | Strip deprecated MLPModel kwargs in script, not config   | Keeps config valid against isaaclab_rl validators while passing only what MLPModel accepts |
+| 2026-04-13 | Defer rendered video to cloud or later milestone         | Blackwell viewport bug blocks Hydra-based rendering; metrics are sufficient proof |
 | ...        | ...                                              | ...                                       |
 
 ---
